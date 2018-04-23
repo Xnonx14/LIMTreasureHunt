@@ -16,4 +16,12 @@ public class MainActivity extends AppCompatActivity {
     public void buttonOnClick(View v){
         System.out.println("kevin is the best!!! amazing");
     }
+
+    public void goToBroken(View v){
+        setContentView(R.layout.screen2);
+    }
+
+    public void goToHome(View v){
+        setContentView(R.layout.activity_main);
+    }
 }
