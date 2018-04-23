@@ -14,6 +14,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void buttonOnClick(View v){
-        System.out.println("hi");
+        System.out.println("kevin is the best!!! amazing");
     }
 }
