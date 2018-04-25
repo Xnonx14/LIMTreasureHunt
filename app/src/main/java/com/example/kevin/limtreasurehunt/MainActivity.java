@@ -24,4 +24,6 @@ public class MainActivity extends AppCompatActivity {
     public void goToHome(View v){
         setContentView(R.layout.activity_main);
     }
+
+    public void goToFirst(View v) { setContentView(R.layout.screen3);}
 }
