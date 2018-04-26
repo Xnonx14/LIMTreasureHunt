@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onNewIntent(Intent intent){
-        Toast.makeText(this,"Intent received!",Toast.LENGTH_LONG).show();
         if (intent != null && NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
             Parcelable[] rawMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
             if (rawMessages != null) {
@@ -48,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     String languageCode = new String(payload, 1, languageCodeLength, "US-ASCII");
                     String text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, "UTF-8");
-                    Toast.makeText(this, text, Toast.LENGTH_LONG).show();
+                    if(text.equals("testing for kevin")){
+                        setContentView(R.layout.screen2);
+                    }
                 }catch(Exception e){
                     Toast.makeText(this, "Unable to read text", Toast.LENGTH_LONG).show();
                 }
