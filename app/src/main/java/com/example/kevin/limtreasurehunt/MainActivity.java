@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +27,20 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"NFC Enabled!",Toast.LENGTH_LONG).show();
         }else{
             Toast.makeText(this,"NFC NOT ENABLED!",Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    protected String playerName;
+    public void start(View v) {
+
+        EditText teamName = (EditText) findViewById(R.id.inputTeamName);
+        String team = teamName.getText().toString();
+        if (team != null) {
+            playerName = team; //can be printed to console when Leaderboard button is pressed
+            goToBroken(v);
+        } else {
+            System.out.println("Don't forget to enter a team name!");
         }
 
     }
@@ -63,20 +78,24 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     protected void onResume(){
-        Intent intent = new Intent(this,MainActivity.class);
-        intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
-        IntentFilter[] intentfilter = new IntentFilter[]{};
-        nfcAdapter.enableForegroundDispatch(this,pendingIntent,intentfilter,null);
+        if(nfcAdapter!=null){
+            Intent intent = new Intent(this,MainActivity.class);
+            intent.addFlags(Intent.FLAG_RECEIVER_REPLACE_PENDING);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this,0,intent,0);
+            IntentFilter[] intentfilter = new IntentFilter[]{};
+            nfcAdapter.enableForegroundDispatch(this,pendingIntent,intentfilter,null);
+        }
         super.onResume();
     }
 
     protected void onPause(){
-        nfcAdapter.disableForegroundDispatch(this);
+        if(nfcAdapter!=null){
+            nfcAdapter.disableForegroundDispatch(this);
+        }
         super.onPause();
     }
     public void buttonOnClick(View v){
-        System.out.println("kevin is the best!!! amazing");
+        System.out.println(playerName);
     }
 
     public void goToBroken(View v){
