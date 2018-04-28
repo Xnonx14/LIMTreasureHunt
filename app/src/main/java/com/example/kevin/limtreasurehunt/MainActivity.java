@@ -3,16 +3,19 @@ package com.example.kevin.limtreasurehunt;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 public class MainActivity extends AppCompatActivity {
     NfcAdapter nfcAdapter;
@@ -33,14 +36,15 @@ public class MainActivity extends AppCompatActivity {
 
     protected String playerName;
     public void start(View v) {
-
         EditText teamName = (EditText) findViewById(R.id.inputTeamName);
         String team = teamName.getText().toString();
-        if (team != null) {
+        if (!TextUtils.isEmpty(team)) {
             playerName = team; //can be printed to console when Leaderboard button is pressed
-            goToBroken(v);
+            goToTutorial(v);
         } else {
-            System.out.println("Don't forget to enter a team name!");
+            String temp = "Don't forget to enter a team name!";
+            Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+
         }
 
     }
@@ -107,4 +111,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToFirst(View v) { setContentView(R.layout.screen3);}
+
+    public void goToTutorial(View v) {
+        setContentView(R.layout.screenv);
+
+        VideoView videoview = (VideoView) findViewById(R.id.videoView);
+        Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.vid);
+        videoview.setVideoURI(uri);
+        videoview.start();
+
+    }
 }
