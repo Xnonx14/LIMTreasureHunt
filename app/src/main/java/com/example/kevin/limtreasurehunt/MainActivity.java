@@ -179,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
         sr = SpeechRecognizer.createSpeechRecognizer(this);
         sr.setRecognitionListener((RecognitionListener) listener);
         sr.startListening(intent);
+
         Toast.makeText(this,"I'm listening!",Toast.LENGTH_LONG).show();
     }
 
