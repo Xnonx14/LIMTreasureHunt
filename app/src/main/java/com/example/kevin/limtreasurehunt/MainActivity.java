@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     protected String playerName;
+    protected Double numCorrect = 0.0;
+    protected Double numPuzzles = 5.0;
+    protected Double progress = numCorrect*100/numPuzzles;
+
     public void start(View v) {
         EditText teamName = (EditText) findViewById(R.id.inputTeamName);
         String team = teamName.getText().toString();
