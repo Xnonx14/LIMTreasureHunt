@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.view.View;
 import android.media.MediaRecorder;
 import android.speech.SpeechRecognizer;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         sr.setRecognitionListener((RecognitionListener) listener);
         sr.startListening(intent);
 
-        System.out.print("I'm listening!");
+        Toast.makeText(this, "Unable to read text", Toast.LENGTH_LONG).show();
 
     }
 }
