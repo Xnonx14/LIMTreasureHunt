@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     }
     // protected variables to keep track of
     protected String playerName;
-    protected int prevPage = R.layout.activity_main;
+    protected int prevPage = R.layout.default_screen;
     protected Double numCorrect = 0.0;
     protected Double numPuzzles = 5.0;
     protected Double progress = numCorrect*100/numPuzzles;
@@ -79,14 +79,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToBroken(View v){
-        prevPage = (android.R.id.content);
         setContentView(R.layout.broken_parts);
 
     }
 
-    public void goToDriving (View v) { setContentView(R.layout.driving);}
+    public void goToDriving (View v) {
+        setContentView(R.layout.driving);
+        prevPage = R.layout.driving;
+    }
 
-    public void goToMajorParts(View v) { setContentView(R.layout.major_parts);}
+    public void goToMajorParts(View v) {
+        setContentView(R.layout.major_parts);
+        prevPage = R.layout.major_parts;
+    }
+
+    public void newPuzzle(View v) {
+        setContentView(R.layout.default_screen);
+        prevPage = R.layout.default_screen;
+    }
 
     @Override
     protected void onNewIntent(Intent intent){
@@ -105,8 +115,15 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     String languageCode = new String(payload, 1, languageCodeLength, "US-ASCII");
                     String text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, "UTF-8");
-                    if(text.equals("testing for kevin")){
-                        setContentView(R.layout.broken_parts);
+                    //ADD TO THIS
+                    if(text.equals("Driving for sport and pleasure")){
+                        setContentView(R.layout.driving);
+                    }
+                    else if(text.equals("A trip to yesterday")){
+
+                    }
+                    else if(text.equals("Major parts of a vehicle")){
+                        setContentView(R.layout.major_parts);
                     }
                 }catch(Exception e){
                     Toast.makeText(this, "Unable to read text", Toast.LENGTH_LONG).show();
