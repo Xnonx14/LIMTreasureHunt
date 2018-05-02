@@ -38,14 +38,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
+    // protected variables to keep track of
     protected String playerName;
+    protected int prevPage = R.layout.activity_main;
     protected Double numCorrect = 0.0;
     protected Double numPuzzles = 5.0;
     protected Double progress = numCorrect*100/numPuzzles;
 
     public void start(View v) {
-        EditText teamName = (EditText) findViewById(R.id.inputTeamName);
+        EditText teamName = findViewById(R.id.inputTeamName);
         String team = teamName.getText().toString();
         if (!TextUtils.isEmpty(team)) {
             playerName = team; //can be printed to console when Leaderboard button is pressed
@@ -57,6 +58,35 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+
+
+    public void goToHome(View v){
+        setContentView(R.layout.activity_main);
+    }
+
+    public void goToTutorial(View v) {
+        setContentView(R.layout.intro_video);
+
+        VideoView videoview = findViewById(R.id.videoView);
+        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.vid);
+        videoview.setVideoURI(uri);
+        videoview.start();
+    }
+
+    public void goToPrev (View v) {
+        setContentView(prevPage);
+    }
+
+    public void goToBroken(View v){
+        prevPage = (android.R.id.content);
+        setContentView(R.layout.broken_parts);
+
+    }
+
+    public void goToDriving (View v) { setContentView(R.layout.driving);}
+
+    public void goToMajorParts(View v) { setContentView(R.layout.major_parts);}
 
     @Override
     protected void onNewIntent(Intent intent){
@@ -76,19 +106,17 @@ public class MainActivity extends AppCompatActivity {
                     String languageCode = new String(payload, 1, languageCodeLength, "US-ASCII");
                     String text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, "UTF-8");
                     if(text.equals("testing for kevin")){
-                        setContentView(R.layout.screen2);
+                        setContentView(R.layout.broken_parts);
                     }
                 }catch(Exception e){
                     Toast.makeText(this, "Unable to read text", Toast.LENGTH_LONG).show();
                 }
 
-
             }
         }
-
-
         super.onNewIntent(intent);
     }
+
     @Override
     protected void onResume(){
         if(nfcAdapter!=null){
@@ -107,29 +135,6 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onPause();
     }
-    public void buttonOnClick(View v){
-        System.out.println(playerName);
-    }
-
-    public void goToBroken(View v){
-        setContentView(R.layout.screen2);
-    }
-
-    public void goToHome(View v){
-        setContentView(R.layout.activity_main);
-    }
-
-    public void goToFirst(View v) { setContentView(R.layout.screen3);}
-
-    public void goToTutorial(View v) {
-        setContentView(R.layout.screenv);
-
-        VideoView videoview = (VideoView) findViewById(R.id.videoView);
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.vid);
-        videoview.setVideoURI(uri);
-        videoview.start();
-    }
-    public void goToSecond(View v) { setContentView(R.layout.screen4);}
 
     public void voiceRecognize(View v){
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -181,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         sr = SpeechRecognizer.createSpeechRecognizer(this);
-        sr.setRecognitionListener((RecognitionListener) listener);
+        sr.setRecognitionListener(listener);
         sr.startListening(intent);
 
         Toast.makeText(this,"I'm listening!",Toast.LENGTH_LONG).show();
