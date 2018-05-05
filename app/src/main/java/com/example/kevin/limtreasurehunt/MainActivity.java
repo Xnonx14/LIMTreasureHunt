@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         String team = teamName.getText().toString();
         if (!TextUtils.isEmpty(team)) {
             playerName = team; //can be printed to console when Leaderboard button is pressed
+            Toast.makeText(this,"Welcome " + team + "! Let's begin!", Toast.LENGTH_LONG).show();
             goToTutorial(v);
         } else {
             String temp = "Don't forget to enter a team name!";
