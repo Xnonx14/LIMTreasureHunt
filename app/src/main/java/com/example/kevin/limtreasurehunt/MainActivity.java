@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     String temp = "Your answer, ";
                     temp += response;
-                    temp += " is incorrect. Try again! Your answer should be twenty.";
+                    temp += " is incorrect. Try again!";
                     Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
                     return false;
                 }
