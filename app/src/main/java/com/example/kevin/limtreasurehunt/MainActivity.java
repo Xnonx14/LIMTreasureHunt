@@ -74,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
         videoview.start();
     }
 
+    public void goToDefault(View v)  {
+        setContentView(R.layout.default_screen);
+        prevPage = R.layout.default_screen;
+    }
+
     public void goToPrev (View v) {
         setContentView(prevPage);
     }
@@ -83,24 +88,169 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void goToDriving (View v) {
+    public void goToDriving () {
         setContentView(R.layout.driving);
         prevPage = R.layout.driving;
     }
 
-    public void goToMajorParts(View v) {
+    public void goToGoingPlaces () {
+        setContentView(R.layout.going_places);
+        prevPage = R.layout.going_places;
+    }
+
+    public void goToMajorParts() {
         setContentView(R.layout.major_parts);
         prevPage = R.layout.major_parts;
     }
 
+    public void goToMakingCarriages() {
+        setContentView(R.layout.making_carriages);
+        prevPage = R.layout.making_carriages;
+    }
+
+    public void goToTripToYest() {
+        setContentView(R.layout.trip_to_yesterday);
+        prevPage = R.layout.trip_to_yesterday;
+    }
+
     public void newPuzzle(View v) {
-        setContentView(R.layout.default_screen);
-        prevPage = R.layout.default_screen;
+        boolean valid = checkAnswer();
+        if (valid == true) {
+            goToDefault(v);
+        }
+    }
+
+    private boolean checkAnswer(){
+        if (prevPage == R.layout.driving){
+            EditText ans = findViewById(R.id.editText);
+            String response = ans.getText().toString().toLowerCase().trim();
+            if (!TextUtils.isEmpty(response)) {
+                if ((response ==  "20") || (response == "twenty")){
+                    String temp = "Great job, you fixed the seatbelts!";
+                    Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    numCorrect ++;
+                    return true;
+                }
+                else{
+                    String temp = "Your answer, ";
+                    temp += response;
+                    temp += " is incorrect. Try again! Your answer should be twenty.";
+                    Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            } else {
+                String temp = "You must provide an answer!";
+                Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                return false;
+
+            }
+        }
+        else if (prevPage == R.layout.going_places){
+            EditText ans = findViewById(R.id.editText2);
+            String response = ans.getText().toString().toLowerCase().trim();
+            if (!TextUtils.isEmpty(response)) {
+                if (response == "wells fargo"){
+                    String temp = "Great job, you fixed the power supply!";
+                    Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    numCorrect++;
+                    return true;
+                }
+                else{
+                    String temp = "Your answer, ";
+                    temp += response;
+                    temp += " is incorrect. Try again!";
+                    Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            } else {
+                String temp = "You must provide an answer!";
+                Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                return false;
+
+            }
+        }
+
+        else if (prevPage == R.layout.major_parts){
+            //get text response from the record button
+            String response = "";
+            if (!TextUtils.isEmpty(response)) {
+                if ((response == "seat") || (response == "seats") || (response == "20") || (response == "twenty")){
+                    String temp = "Great job, you fixed the seats!";
+                    Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    numCorrect++;
+                    return true;
+                }
+                else{
+                    String temp = "Your answer, ";
+                    temp += response;
+                    temp += " is incorrect. Try again!";
+                    Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            } else {
+                String temp = "You must provide an answer!";
+                Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                return false;
+
+            }
+        }
+
+        else if (prevPage == R.layout.making_carriages){
+            EditText ans = findViewById(R.id.editText3);
+            String response = ans.getText().toString().toLowerCase().trim();
+            if (!TextUtils.isEmpty(response)) {
+                if (response == ""){
+                    String temp = "Great job, you fixed the engine!";
+                    Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    numCorrect++;
+                    return true;
+                }
+                else{
+                    String temp = "Your answer, ";
+                    temp += response;
+                    temp += " is incorrect. Try again!";
+                    Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            } else {
+                String temp = "You must provide an answer!";
+                Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                return false;
+
+            }
+        }
+        else if (prevPage == R.layout.trip_to_yesterday){
+            EditText ans = findViewById(R.id.editText4);
+            String response = ans.getText().toString().toLowerCase().trim();
+            if (!TextUtils.isEmpty(response)) {
+                if ((response == "12:30pm") || (response == " 12:30 pm") || (response == "12:30") || (response == "twelve-thirty") || (response == "twelve thirty")){
+                    String temp = "Great job, you found the schedule!";
+                    Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    numCorrect++;
+                    return true;
+                }
+                else{
+                    String temp = "Your answer, ";
+                    temp += response;
+                    temp += " is incorrect. Try again!";
+                    Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    return false;
+                }
+            } else {
+                String temp = "You must provide an answer!";
+                Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                return false;
+
+            }
+        }
+        else{
+            return false;
+        }
     }
 
     @Override
     protected void onNewIntent(Intent intent){
-        if (intent != null && NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+        if (intent != null && NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction()) && prevPage == R.layout.default_screen) {
             Parcelable[] rawMessages = intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
             if (rawMessages != null) {
                 NdefMessage[] messages = new NdefMessage[rawMessages.length];
@@ -117,13 +267,19 @@ public class MainActivity extends AppCompatActivity {
                     String text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, "UTF-8");
                     //ADD TO THIS
                     if(text.equals("Driving for sport and pleasure")){
-                        setContentView(R.layout.driving);
+                        goToDriving();
                     }
-                    else if(text.equals("A trip to yesterday")){
-
+                    else if(text.equals("Going places")){
+                        goToGoingPlaces();
                     }
                     else if(text.equals("Major parts of a vehicle")){
-                        setContentView(R.layout.major_parts);
+                        goToMajorParts();
+                    }
+                    else if(text.equals("Making carriages")){
+                        goToMakingCarriages();
+                    }
+                    else if(text.equals("A trip to yesterday")){
+                        goToTripToYest();
                     }
                 }catch(Exception e){
                     Toast.makeText(this, "Unable to read text", Toast.LENGTH_LONG).show();
