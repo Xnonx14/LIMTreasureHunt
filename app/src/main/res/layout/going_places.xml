@@ -50,7 +50,6 @@
         android:clickable="true"
         android:focusable="true"
         android:onClick="goToBroken"
-        android:progress="40"
         android:progressTint="@android:color/holo_green_dark"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 import android.media.MediaRecorder;
@@ -41,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
     // protected variables to keep track of
     protected String playerName;
     protected int prevPage = R.layout.default_screen;
-    protected Double numCorrect = 0.0;
-    protected Double numPuzzles = 5.0;
-    protected Double progress = numCorrect*100/numPuzzles;
+    protected Integer numCorrect = 0;
+    protected Integer numPuzzles = 5;
+    protected Integer progress = numCorrect*100/numPuzzles;
 
     public void start(View v) {
         EditText teamName = findViewById(R.id.inputTeamName);
@@ -76,6 +77,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToDefault(View v)  {
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setProgress(progress);
         setContentView(R.layout.default_screen);
         prevPage = R.layout.default_screen;
     }
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
             EditText ans = findViewById(R.id.editText);
             String response = ans.getText().toString().toLowerCase().trim();
             if (!TextUtils.isEmpty(response)) {
-                if ((response ==  "20") || (response == "twenty")){
+                if ((response.equals("20")) || (response.equals("twenty"))){
                     String temp = "Great job, you fixed the seatbelts!";
                     Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
                     numCorrect ++;
@@ -150,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
             EditText ans = findViewById(R.id.editText2);
             String response = ans.getText().toString().toLowerCase().trim();
             if (!TextUtils.isEmpty(response)) {
-                if (response == "wells fargo"){
+                if (response.equals("wells fargo")){
                     String temp = "Great job, you fixed the power supply!";
                     Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
                     numCorrect++;
@@ -175,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
             //get text response from the record button
             String response = "";
             if (!TextUtils.isEmpty(response)) {
-                if ((response == "seat") || (response == "seats") || (response == "20") || (response == "twenty")){
+                if ((response.equals("seat")) || (response.equals("seats")) || (response.equals("20")) || (response.equals("twenty"))){
                     String temp = "Great job, you fixed the seats!";
                     Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
                     numCorrect++;
@@ -200,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
             EditText ans = findViewById(R.id.editText3);
             String response = ans.getText().toString().toLowerCase().trim();
             if (!TextUtils.isEmpty(response)) {
-                if (response == ""){
+                if (response.equals("1902")){
                     String temp = "Great job, you fixed the engine!";
                     Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
                     numCorrect++;
@@ -224,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
             EditText ans = findViewById(R.id.editText4);
             String response = ans.getText().toString().toLowerCase().trim();
             if (!TextUtils.isEmpty(response)) {
-                if ((response == "12:30pm") || (response == " 12:30 pm") || (response == "12:30") || (response == "twelve-thirty") || (response == "twelve thirty")){
+                if ((response.equals("12:30pm")) || (response.equals("12:30 pm")) || (response.equals("12:30")) || (response.equals("twelve-thirty")) || (response.equals("twelve thirty"))){
                     String temp = "Great job, you found the schedule!";
                     Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
                     numCorrect++;
