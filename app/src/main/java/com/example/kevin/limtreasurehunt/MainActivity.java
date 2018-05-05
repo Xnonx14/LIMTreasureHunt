@@ -79,6 +79,10 @@ public class MainActivity extends AppCompatActivity {
     public void goToDefault(View v)  {
         setContentView(R.layout.default_screen);
         prevPage = R.layout.default_screen;
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setIndeterminate(false);
+        progressBar.setMax(100);
+        progressBar.setProgress(progress);
     }
 
     public void goToPrev (View v) {
