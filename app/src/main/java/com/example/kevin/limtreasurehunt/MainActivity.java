@@ -42,9 +42,14 @@ public class MainActivity extends AppCompatActivity {
     // protected variables to keep track of
     protected String playerName;
     protected int prevPage = R.layout.default_screen;
-    protected Integer numCorrect = 0;
-    protected Integer numPuzzles = 5;
-    protected Integer progress = numCorrect*100/numPuzzles;
+    protected int numCorrect = 0;
+    protected int numPuzzles = 5;
+    public int getProgressBarProgress(){
+        int progress = numCorrect*100/numPuzzles;
+        return progress;
+    }
+
+
 
     public void start(View v) {
         EditText teamName = findViewById(R.id.inputTeamName);
@@ -82,8 +87,7 @@ public class MainActivity extends AppCompatActivity {
         ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setIndeterminate(false);
         progressBar.setMax(100);
-        Toast.makeText(this,progress,Toast.LENGTH_LONG).show();
-        progressBar.setProgress(progress);
+        progressBar.setProgress(getProgressBarProgress());
     }
 
     public void goToPrev (View v) {
@@ -91,8 +95,7 @@ public class MainActivity extends AppCompatActivity {
         ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setIndeterminate(false);
         progressBar.setMax(100);
-        Toast.makeText(this,progress,Toast.LENGTH_LONG).show();
-        progressBar.setProgress(progress);
+        progressBar.setProgress(getProgressBarProgress());
     }
 
     public void goToBroken(View v){
@@ -103,6 +106,8 @@ public class MainActivity extends AppCompatActivity {
     public void goToDriving () {
         setContentView(R.layout.driving);
         prevPage = R.layout.driving;
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setProgress(getProgressBarProgress());
     }
 
     public void goToGoingPlaces () {
@@ -113,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
     public void goToMajorParts() {
         setContentView(R.layout.major_parts);
         prevPage = R.layout.major_parts;
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setProgress(getProgressBarProgress());
     }
 
     public void goToMakingCarriages() {
