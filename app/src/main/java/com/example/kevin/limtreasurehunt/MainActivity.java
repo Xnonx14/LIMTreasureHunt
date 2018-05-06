@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setIndeterminate(false);
         progressBar.setMax(100);
+        Toast.makeText(this,progress,Toast.LENGTH_LONG).show();
         progressBar.setProgress(progress);
     }
 
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setIndeterminate(false);
         progressBar.setMax(100);
+        Toast.makeText(this,progress,Toast.LENGTH_LONG).show();
         progressBar.setProgress(progress);
     }
 
