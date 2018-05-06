@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToBroken(View v){
         setContentView(R.layout.broken_parts);
-
     }
 
     public void goToDriving () {
@@ -113,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
     public void goToGoingPlaces () {
         setContentView(R.layout.going_places);
         prevPage = R.layout.going_places;
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setProgress(getProgressBarProgress());
     }
 
     public void goToMajorParts() {
@@ -125,11 +126,15 @@ public class MainActivity extends AppCompatActivity {
     public void goToMakingCarriages() {
         setContentView(R.layout.making_carriages);
         prevPage = R.layout.making_carriages;
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setProgress(getProgressBarProgress());
     }
 
     public void goToTripToYest() {
         setContentView(R.layout.trip_to_yesterday);
         prevPage = R.layout.trip_to_yesterday;
+        ProgressBar progressBar = findViewById(R.id.progressBar);
+        progressBar.setProgress(getProgressBarProgress());
     }
 
     public void newPuzzle(View v) {
