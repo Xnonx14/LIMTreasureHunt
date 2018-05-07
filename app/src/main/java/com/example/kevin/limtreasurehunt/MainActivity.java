@@ -1,6 +1,7 @@
 package com.example.kevin.limtreasurehunt;
 
 import android.app.PendingIntent;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
@@ -13,17 +14,25 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 import android.media.MediaRecorder;
 import android.speech.SpeechRecognizer;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
     NfcAdapter nfcAdapter;
     private MediaRecorder mmediaRecorder;
     private SpeechRecognizer sr;
+    Button speechButton;
+    private final int REQ_CODE_SPEECH_INPUT = 100;
+    private String recordAnswer = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,28 +41,69 @@ public class MainActivity extends AppCompatActivity {
 
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
-        if(nfcAdapter!= null && nfcAdapter.isEnabled()){
-            Toast.makeText(this,"NFC Enabled!",Toast.LENGTH_LONG).show();
-        }else{
-            Toast.makeText(this,"NFC NOT ENABLED!",Toast.LENGTH_LONG).show();
+        if (nfcAdapter != null && nfcAdapter.isEnabled()) {
+            Toast.makeText(this, "NFC Enabled!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "NFC NOT ENABLED!", Toast.LENGTH_LONG).show();
         }
-
     }
+
+    private void askSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
+                "Speak now and wait");
+        try {
+            startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException a) {
+
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case REQ_CODE_SPEECH_INPUT: {
+                if (resultCode == RESULT_OK && null != data) {
+
+                    ArrayList<String> result = data
+                            .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    //speechButton.setText(result.get(0));
+                    recordAnswer = result.get(0);
+                    boolean valid = checkAnswer();
+                    if (valid == true) {
+                        //goToDefault(View v);
+                        setContentView(R.layout.default_screen);
+                        prevPage = R.layout.default_screen;
+                        ProgressBar progressBar = findViewById(R.id.progressBar);
+                        progressBar.setIndeterminate(false);
+                        progressBar.setMax(100);
+                        progressBar.setProgress(getProgressBarProgress());
+                    }
+                }
+                break;
+            }
+        }
+    }
+
     // protected variables to keep track of
     protected String playerName;
     protected int prevPage = R.layout.default_screen;
     protected int numCorrect = 0;
     protected int numPuzzles = 5;
+    protected String team = "";
     public int getProgressBarProgress(){
         int progress = numCorrect*100/numPuzzles;
         return progress;
     }
 
 
-
     public void start(View v) {
         EditText teamName = findViewById(R.id.inputTeamName);
-        String team = teamName.getText().toString();
+        team = teamName.getText().toString();
         if (!TextUtils.isEmpty(team)) {
             playerName = team; //can be printed to console when Leaderboard button is pressed
             Toast.makeText(this,"Welcome " + team + "! Let's begin!", Toast.LENGTH_LONG).show();
@@ -82,12 +132,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void goToDefault(View v)  {
-        setContentView(R.layout.default_screen);
-        prevPage = R.layout.default_screen;
         ProgressBar progressBar = findViewById(R.id.progressBar);
-        progressBar.setIndeterminate(false);
-        progressBar.setMax(100);
-        progressBar.setProgress(getProgressBarProgress());
+
+        int progress = getProgressBarProgress();
+        if(progress == 100){
+            setContentView(R.layout.congrats);
+            TextView name = (TextView) findViewById(R.id.textView2);
+            progressBar.setMax(100);
+            CharSequence newString = team;
+            name.setText(newString);
+        }
+        else {
+            setContentView(R.layout.default_screen);
+            ProgressBar progressBar1 = findViewById(R.id.progressBar);
+            progressBar1.setIndeterminate(false);
+            progressBar1.setMax(100);
+            progressBar1.setProgress(progress);
+            prevPage = R.layout.default_screen;
+        }
+
     }
 
     public void goToPrev (View v) {
@@ -121,6 +184,17 @@ public class MainActivity extends AppCompatActivity {
         prevPage = R.layout.major_parts;
         ProgressBar progressBar = findViewById(R.id.progressBar);
         progressBar.setProgress(getProgressBarProgress());
+
+        speechButton = (Button)findViewById(R.id.button7);
+
+        speechButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //goToHome(v);
+                askSpeechInput();
+            }
+        });
     }
 
     public void goToMakingCarriages() {
@@ -195,10 +269,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
         else if (prevPage == R.layout.major_parts){
-            //get text response from the record button
-            String response = "";
-            if (!TextUtils.isEmpty(response)) {
-                if ((response.equals("seat")) || (response.equals("seats")) || (response.equals("20")) || (response.equals("twenty"))){
+            if (!TextUtils.isEmpty(recordAnswer)) {
+                if ((recordAnswer.equals("seat")) || (recordAnswer.equals("seats")) || (recordAnswer.equals("20")) || (recordAnswer.equals("twenty"))){
                     String temp = "Great job, you fixed the seats!";
                     Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
                     numCorrect++;
@@ -206,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else{
                     String temp = "Your answer, ";
-                    temp += response;
+                    temp += recordAnswer;
                     temp += " is incorrect. Try again!";
                     Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
                     return false;
@@ -304,6 +376,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(text.equals("A trip to yesterday")){
                         goToTripToYest();
+                    }
+                    else if(text.equals("")){
+                        Intent url = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.jigsawplanet.com/?rc=play&pid=3fe556f4babe&pieces=12"));
+                        startActivity(url);
                     }
                 }catch(Exception e){
                     Toast.makeText(this, "Unable to read text", Toast.LENGTH_LONG).show();
