@@ -76,12 +76,30 @@ public class MainActivity extends AppCompatActivity {
                     boolean valid = checkAnswer();
                     if (valid == true) {
                         //goToDefault(View v);
-                        setContentView(R.layout.default_screen);
+                        /*setContentView(R.layout.default_screen);
                         prevPage = R.layout.default_screen;
                         ProgressBar progressBar = findViewById(R.id.progressBar);
                         progressBar.setIndeterminate(false);
                         progressBar.setMax(100);
-                        progressBar.setProgress(getProgressBarProgress());
+                        progressBar.setProgress(getProgressBarProgress());*/
+
+                        ProgressBar progressBar = findViewById(R.id.progressBar);
+                        int progress = getProgressBarProgress();
+                        if(progress == 100){
+                            setContentView(R.layout.congrats);
+                            TextView name = (TextView) findViewById(R.id.textView2);
+                            progressBar.setMax(100);
+                            CharSequence newString = team;
+                            name.setText(newString);
+                        }
+                        else {
+                            setContentView(R.layout.default_screen);
+                            ProgressBar progressBar1 = findViewById(R.id.progressBar);
+                            progressBar1.setIndeterminate(false);
+                            progressBar1.setMax(100);
+                            progressBar1.setProgress(progress);
+                            prevPage = R.layout.default_screen;
+                        }
                     }
                 }
                 break;
