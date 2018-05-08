@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -187,6 +188,43 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToBroken(View v){
         setContentView(R.layout.broken_parts);
+        ImageView view1 = findViewById(R.id.imageViewx1);   //Seat
+        ImageView view2 = findViewById(R.id.imageViewx2);   //Belt
+        ImageView view3 = findViewById(R.id.imageViewx3);   //engine
+        ImageView view4 = findViewById(R.id.imageViewx4);   //power supply
+        ImageView view5 = findViewById(R.id.imageViewx5);   //calendar
+        view1.setVisibility(View.VISIBLE);
+        view2.setVisibility(View.VISIBLE);
+        view3.setVisibility(View.VISIBLE);
+        view4.setVisibility(View.VISIBLE);
+        view5.setVisibility(View.VISIBLE);
+
+        if(solvedMajor == true){
+            view1.setVisibility(View.INVISIBLE);
+        }else{
+            view1.setVisibility(View.VISIBLE);
+        }
+        if(solvedDriving == true){
+            view2.setVisibility(View.INVISIBLE);
+        }else{
+            view2.setVisibility(View.VISIBLE);
+        }
+        if(solvedMaking == true){
+            view3.setVisibility(View.INVISIBLE);
+        }else{
+            view3.setVisibility(View.VISIBLE);
+        }
+        if(solvedGoing == true){
+            view4.setVisibility(View.INVISIBLE);
+        }else{
+            view4.setVisibility(View.VISIBLE);
+        }
+        if(solvedTrip == true){
+            view5.setVisibility(View.INVISIBLE);
+        }else{
+            view5.setVisibility(View.VISIBLE);
+        }
+
     }
 
     public void goToDriving () {
