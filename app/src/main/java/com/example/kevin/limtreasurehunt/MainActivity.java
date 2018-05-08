@@ -406,7 +406,6 @@ public class MainActivity extends AppCompatActivity {
                         goToTripToYest();
                     }
                     else if(text.equals("http://www.jigsawplanet.com/?rc=play&pid=3fe556f4babe&pieces=12")){
-                        Toast.makeText(this,text,Toast.LENGTH_LONG).show();
                         Intent newIntent = new Intent();
                         Uri uri = Uri.parse(text);
                         newIntent.setAction(Intent.ACTION_VIEW);
