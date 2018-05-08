@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.os.Parcelable;
 import android.speech.RecognitionListener;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT,
-                "Speak now and wait");
+                "Simply say your answer and wait");
         try {
             startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
         } catch (ActivityNotFoundException a) {
@@ -113,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
     protected int numCorrect = 0;
     protected int numPuzzles = 5;
     protected String team = "";
+    protected boolean solvedDriving = false;
+    protected boolean solvedGoing = false;
+    protected boolean solvedMajor = false;
+    protected boolean solvedMaking = false;
+    protected boolean solvedTrip = false;
     public int getProgressBarProgress(){
         int progress = numCorrect*100/numPuzzles;
         return progress;
@@ -244,6 +250,7 @@ public class MainActivity extends AppCompatActivity {
                 if ((response.equals("20")) || (response.equals("twenty"))){
                     String temp = "Great job, you fixed the seatbelts!";
                     Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    solvedDriving = true;
                     numCorrect ++;
                     return true;
                 }
@@ -268,6 +275,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.equals("wells fargo")){
                     String temp = "Great job, you fixed the power supply!";
                     Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    solvedGoing = true;
                     numCorrect++;
                     return true;
                 }
@@ -291,6 +299,7 @@ public class MainActivity extends AppCompatActivity {
                 if ((recordAnswer.equals("seat")) || (recordAnswer.equals("seats")) || (recordAnswer.equals("20")) || (recordAnswer.equals("twenty"))){
                     String temp = "Great job, you fixed the seats!";
                     Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    solvedMajor = true;
                     numCorrect++;
                     return true;
                 }
@@ -316,6 +325,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.equals("1902")){
                     String temp = "Great job, you fixed the engine!";
                     Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    solvedMaking = true;
                     numCorrect++;
                     return true;
                 }
@@ -340,6 +350,7 @@ public class MainActivity extends AppCompatActivity {
                 if ((response.equals("12:30pm")) || (response.equals("12:30 pm")) || (response.equals("12:30")) || (response.equals("twelve-thirty")) || (response.equals("twelve thirty"))){
                     String temp = "Great job, you found the schedule!";
                     Toast.makeText(this,temp,Toast.LENGTH_LONG).show();
+                    solvedTrip = true;
                     numCorrect++;
                     return true;
                 }
@@ -379,25 +390,28 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     String languageCode = new String(payload, 1, languageCodeLength, "US-ASCII");
                     String text = new String(payload, languageCodeLength + 1, payload.length - languageCodeLength - 1, "UTF-8");
-                    //ADD TO THIS
-                    if(text.equals("Driving for sport and pleasure")){
+                    if(text.equals("Driving for sport and pleasure") && solvedDriving == false){
                         goToDriving();
                     }
-                    else if(text.equals("Going places")){
+                    else if(text.equals("Going places") && solvedGoing == false){
                         goToGoingPlaces();
                     }
-                    else if(text.equals("Major parts of a vehicle")){
+                    else if(text.equals("Major parts of a vehicle") && solvedMajor == false){
                         goToMajorParts();
                     }
-                    else if(text.equals("Making carriages")){
+                    else if(text.equals("Making carriages") && solvedMaking == false){
                         goToMakingCarriages();
                     }
-                    else if(text.equals("A trip to yesterday")){
+                    else if(text.equals("A trip to yesterday") && solvedTrip == false){
                         goToTripToYest();
                     }
-                    else if(text.equals("")){
-                        Intent url = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.jigsawplanet.com/?rc=play&pid=3fe556f4babe&pieces=12"));
-                        startActivity(url);
+                    else if(text.equals("http://www.jigsawplanet.com/?rc=play&pid=3fe556f4babe&pieces=12")){
+                        Toast.makeText(this,text,Toast.LENGTH_LONG).show();
+                        Intent newIntent = new Intent();
+                        Uri uri = Uri.parse(text);
+                        newIntent.setAction(Intent.ACTION_VIEW);
+                        newIntent.setData(uri);
+                        startActivity(newIntent);
                     }
                 }catch(Exception e){
                     Toast.makeText(this, "Unable to read text", Toast.LENGTH_LONG).show();
@@ -425,62 +439,6 @@ public class MainActivity extends AppCompatActivity {
             nfcAdapter.disableForegroundDispatch(this);
         }
         super.onPause();
-    }
-
-    public void voiceRecognize(View v){
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        RecognitionListener listener = new RecognitionListener() {
-            @Override
-            public void onReadyForSpeech(Bundle params) {
-
-            }
-
-            @Override
-            public void onBeginningOfSpeech() {
-
-            }
-
-            @Override
-            public void onRmsChanged(float rmsdB) {
-
-            }
-
-            @Override
-            public void onBufferReceived(byte[] buffer) {
-
-            }
-
-            @Override
-            public void onEndOfSpeech() {
-
-            }
-
-            @Override
-            public void onError(int error) {
-
-            }
-
-            @Override
-            public void onResults(Bundle results) {
-
-            }
-
-            @Override
-            public void onPartialResults(Bundle partialResults) {
-
-            }
-
-            @Override
-            public void onEvent(int eventType, Bundle params) {
-
-            }
-        };
-
-        sr = SpeechRecognizer.createSpeechRecognizer(this);
-        sr.setRecognitionListener(listener);
-        sr.startListening(intent);
-
-        Toast.makeText(this,"I'm listening!",Toast.LENGTH_LONG).show();
     }
 
 }
