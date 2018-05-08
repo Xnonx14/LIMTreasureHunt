@@ -193,36 +193,36 @@ public class MainActivity extends AppCompatActivity {
         ImageView view3 = findViewById(R.id.imageViewx3);   //engine
         ImageView view4 = findViewById(R.id.imageViewx4);   //power supply
         ImageView view5 = findViewById(R.id.imageViewx5);   //calendar
-        view1.setVisibility(View.VISIBLE);
-        view2.setVisibility(View.VISIBLE);
-        view3.setVisibility(View.VISIBLE);
-        view4.setVisibility(View.VISIBLE);
-        view5.setVisibility(View.VISIBLE);
+        view1.setAlpha(255);
+        view2.setAlpha(255);
+        view3.setAlpha(255);
+        view4.setAlpha(255);
+        view5.setAlpha(255);
 
         if(solvedMajor == true){
-            view1.setVisibility(View.INVISIBLE);
+            view1.setAlpha(50);
         }else{
-            view1.setVisibility(View.VISIBLE);
+            view1.setAlpha(255);
         }
         if(solvedDriving == true){
-            view2.setVisibility(View.INVISIBLE);
+            view2.setAlpha(50);
         }else{
-            view2.setVisibility(View.VISIBLE);
+            view2.setAlpha(255);
         }
         if(solvedMaking == true){
-            view3.setVisibility(View.INVISIBLE);
+            view3.setAlpha(50);
         }else{
-            view3.setVisibility(View.VISIBLE);
+            view3.setAlpha(255);
         }
         if(solvedGoing == true){
-            view4.setVisibility(View.INVISIBLE);
+            view4.setAlpha(50);
         }else{
-            view4.setVisibility(View.VISIBLE);
+            view4.setAlpha(255);
         }
         if(solvedTrip == true){
-            view5.setVisibility(View.INVISIBLE);
+            view5.setAlpha(50);
         }else{
-            view5.setVisibility(View.VISIBLE);
+            view5.setAlpha(255);
         }
 
     }
